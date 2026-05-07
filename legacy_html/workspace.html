@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Helios Portal - Giao Diện Quản Trị</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@700;800&family=Inter:wght@300;400;500;600&display=swap');
+        
+        /* HỆ THỐNG BIẾN MÀU SẮC ĐỘNG (THEME VARIABLES) */
+        :root {
+            /* DARK MODE: Dark Blue Neon */
+            --bg-color: #020617; /* Slate-950 sâu */
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --accent-main: #00f3ff; /* Dark Blue Neon / Cyan */
+            --accent-glow: rgba(0, 243, 255, 0.4);
+            --glass-bg: rgba(15, 23, 42, 0.55); /* Kính mờ đen */
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --glass-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
+            --input-bg: rgba(0, 0, 0, 0.4);
+            --blob-1: rgba(0, 102, 255, 0.25);
+            --blob-2: rgba(0, 243, 255, 0.15);
+            --blob-3: rgba(56, 189, 248, 0.1);
+        }
+
+        body.light-theme {
+            /* LIGHT MODE: Xanh Ngọc Pastel Dịu Nhẹ */
+            --bg-color: #f0fdfa; /* Teal-50 rất nhạt */
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --accent-main: #0d9488; /* Teal-600 */
+            --accent-glow: rgba(13, 148, 136, 0.2);
+            --glass-bg: rgba(255, 255, 255, 0.65); /* Kính mờ trắng */
+            --glass-border: rgba(255, 255, 255, 1);
+            --glass-shadow: 0 20px 40px -10px rgba(15, 23, 42, 0.08);
+            --input-bg: rgba(255, 255, 255, 0.5);
+            --blob-1: rgba(45, 212, 191, 0.4); /* Xanh ngọc */
+            --blob-2: rgba(132, 250, 224, 0.3);
+            --blob-3: rgba(204, 251, 241, 0.5);
+        }
+
+        body { 
+            background-color: var(--bg-color); 
+            color: var(--text-main); 
+            font-family: 'Inter', sans-serif; 
+            overflow-x: hidden; 
+            transition: background-color 0.5s ease, color 0.5s ease;
+        }
+        .font-display { font-family: 'Roboto Condensed', sans-serif; }
+        
+        /* CÁC LỚP CHUNG DÙNG CSS VARIABLES */
+        .text-accent { color: var(--accent-main) !important; }
+        .bg-accent { background-color: var(--accent-main) !important; }
+        .border-accent { border-color: var(--accent-main) !important; }
+        .shadow-accent { box-shadow: 0 0 15px var(--accent-glow) !important; }
+
+        .tab-btn { color: var(--text-muted); border-bottom: 2px solid transparent; }
+        .tab-btn.active { border-bottom-color: var(--accent-main); color: var(--accent-main); text-shadow: 0 0 10px var(--accent-glow); }
+
+        /* KHÔNG GIAN NỀN SÁNG TẠO (AMBIENT BACKGROUND) */
+        .bg-grid-dots {
+            background-image: radial-gradient(var(--glass-border) 1px, transparent 1px);
+            background-size: 24px 24px;
+            opacity: 0.5;
+        }
+        .glow-blob {
+            position: absolute; border-radius: 50%; filter: blur(120px); pointer-events: none; z-index: -1;
+            animation: floatBlob 20s infinite alternate ease-in-out;
+        }
+        @keyframes floatBlob {
+            0% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(50px, 30px) scale(1.1); }
+            100% { transform: translate(-30px, 50px) scale(0.9); }
+        }
+
+        /* THIẾT KẾ MACOS LIQUID GLASS (KÍNH LỎNG NỔI TÁCH NỀN) */
+        .macos-glass {
+            background: var(--glass-bg);
+            backdrop-filter: blur(30px) saturate(150%);
+            -webkit-backdrop-filter: blur(30px) saturate(150%);
+            border: 1px solid var(--glass-border);
+            border-radius: 1.5rem;
+            box-shadow: var(--glass-shadow);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .glass-input {
+            background: var(--input-bg);
+            border: 1px solid var(--glass-border);
+            color: var(--text-main);
+            transition: all 0.3s ease;
+        }
+        .glass-input:focus {
+            border-color: var(--accent-main);
+            box-shadow: 0 0 0 3px var(--accent-glow);
+            outline: none;
+        }
+
+        /* KHUNG SOẠN THẢO RICH TEXT */
+        .editor-container {
+            border-radius: 1rem; overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        .editor-container:focus-within { border-color: var(--accent-main); box-shadow: 0 0 20px var(--accent-glow); }
+        .editor-toolbar {
+            display: flex; flex-wrap: wrap; gap: 0.5rem; padding: 0.75rem 1rem;
+            background: rgba(128, 128, 128, 0.05); border-bottom: 1px solid var(--glass-border);
+        }
+        .toolbar-btn {
+            background: transparent; color: var(--text-muted); border: 1px solid transparent;
+            padding: 0.35rem 0.75rem; border-radius: 0.375rem; font-size: 0.875rem; cursor: pointer; transition: all 0.2s;
+        }
+        .toolbar-btn:hover { background: var(--accent-glow); color: var(--text-main); border-color: var(--accent-main); }
+        .toolbar-divider { width: 1px; background-color: var(--glass-border); margin: 0 0.25rem; }
+
+        .editor-content {
+            padding: 1.5rem; min-height: 400px; max-height: 65vh; overflow-y: auto; outline: none;
+            line-height: 1.7; font-size: 1.05rem; color: var(--text-main); background: transparent;
+        }
+        .editor-content[placeholder]:empty:before { content: attr(placeholder); color: var(--text-muted); cursor: text; }
+        
+        /* Typography trong Editor */
+        .editor-content h2 { font-family: 'Roboto Condensed', sans-serif; font-size: 1.875rem; font-weight: 700; color: var(--accent-main); margin-top: 2rem; margin-bottom: 1rem; text-transform: uppercase; }
+        .editor-content h3 { font-family: 'Roboto Condensed', sans-serif; font-size: 1.375rem; font-weight: 700; opacity: 0.9; margin-top: 1.5rem; margin-bottom: 0.75rem; }
+        .editor-content a { color: var(--accent-main); text-decoration: none; border-bottom: 1px dashed var(--accent-main); transition: opacity 0.2s; }
+        .editor-content a:hover { opacity: 0.7; }
+        .editor-content p { margin-bottom: 1rem; }
+        .editor-content figure { margin: 2rem 0; width: 100%; border-radius: 0.75rem; overflow: hidden; background: var(--input-bg); border: 1px solid var(--glass-border); }
+        .editor-content img { width: 100%; height: auto; display: block; object-fit: cover; }
+        .editor-content figcaption { text-align: center; color: var(--text-muted); font-size: 0.875rem; padding: 0.75rem; font-style: italic; background: rgba(0,0,0,0.1); }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: var(--text-muted); border-radius: 4px; opacity: 0.5; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--accent-main); }
+
+        #loading-overlay { display: none; }
+        #loading-overlay.active { display: flex; }
+
+        /* Toggle Theme Switch */
+        .theme-switch-wrapper { display: flex; align-items: center; gap: 0.5rem; }
+        .theme-switch { position: relative; display: inline-block; width: 50px; height: 26px; }
+        .theme-switch input { opacity: 0; width: 0; height: 0; }
+        .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(128,128,128,0.3); transition: .4s; border-radius: 34px; border: 1px solid var(--glass-border); }
+        .slider:before { position: absolute; content: ""; height: 18px; width: 18px; left: 4px; bottom: 3px; background-color: var(--text-main); transition: .4s; border-radius: 50%; }
+        input:checked + .slider { background-color: var(--accent-main); }
+        input:checked + .slider:before { transform: translateX(24px); background-color: #fff;}
+    </style>
+</head>
+<body class="relative min-h-screen flex flex-col">
+
+    <!-- KHÔNG GIAN NỀN TRANG TRÍ -->
+    <div class="fixed inset-0 z-[-1] pointer-events-none transition-colors duration-500">
+        <div class="absolute inset-0 bg-grid-dots"></div>
+        <div class="glow-blob w-[600px] h-[600px] top-[-10%] left-[-10%]" style="background-color: var(--blob-1)"></div>
+        <div class="glow-blob w-[500px] h-[500px] bottom-[10%] right-[-5%] animation-delay-2000" style="background-color: var(--blob-2)"></div>
+        <div class="glow-blob w-[400px] h-[400px] top-[30%] right-[20%] animation-delay-4000" style="background-color: var(--blob-3)"></div>
+    </div>
+
+    <!-- MAIN APP -->
+    <div class="p-4 md:p-8 max-w-6xl mx-auto w-full relative z-10 flex-grow flex flex-col">
+        
+        <!-- TOP HEADER -->
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-4 mb-8">
+            <div>
+                <div class="flex items-end gap-4 mb-2">
+                    <h1 class="font-display text-4xl uppercase font-bold tracking-wide">Helios <span class="text-accent">Portal</span></h1>
+                    <span class="glass-input font-mono text-[10px] px-2 py-1 rounded uppercase tracking-widest mb-1">Workspace</span>
+                </div>
+                <p class="text-sm font-light" style="color: var(--text-muted)">Hệ thống biên tập tương tác và Tự động hóa SEO bằng AI</p>
+            </div>
+            
+            <!-- Nút đổi Giao diện Sáng/Tối -->
+            <div class="macos-glass px-4 py-2 flex items-center gap-3">
+                <span class="text-xs font-mono uppercase tracking-wider" style="color: var(--text-muted)" id="theme-label">Tối Neon</span>
+                <label class="theme-switch">
+                    <input type="checkbox" id="theme-toggle" onchange="toggleTheme()">
+                    <span class="slider"></span>
+                </label>
+            </div>
+        </div>
+
+        <!-- Chuyển đổi Role -->
+        <div class="flex gap-6 border-b mb-8" style="border-color: var(--glass-border)">
+            <button onclick="switchTab('editor')" id="tab-editor" class="tab-btn active pb-3 font-mono uppercase tracking-widest text-sm transition-colors hover:text-accent">Góc Biên Tập</button>
+            <button onclick="switchTab('admin')" id="tab-admin" class="tab-btn pb-3 font-mono uppercase tracking-widest text-sm transition-colors hover:text-accent">Phòng Kiểm Duyệt</button>
+        </div>
+
+        <!-- WORKSPACE CỦA EDITOR (LIQUID GLASS BLOCKS) -->
+        <div id="workspace-editor" class="block animate-fade-in flex-grow">
+            <div class="flex flex-col gap-8">
+                
+                <!-- Khu vực Metadata (Glass Block 1) -->
+                <div class="macos-glass p-6 md:p-8">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-xs font-mono mb-2 uppercase tracking-widest" style="color: var(--text-muted)">Tiêu Đề Bài Viết Chính (H1)</label>
+                            <input type="text" id="post-title" class="glass-input w-full rounded-lg p-3.5 font-display text-lg" placeholder="Nhập tiêu đề ấn tượng...">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-mono mb-2 uppercase tracking-widest" style="color: var(--text-muted)">Ảnh Bìa (Tải Lên / Liên Kết)</label>
+                            <div class="flex gap-2">
+                                <input type="text" id="post-image" class="glass-input w-full rounded-lg p-3.5 text-sm font-mono" placeholder="Đường dẫn ảnh hoặc tải tệp lên...">
+                                <input type="file" id="local-cover-upload" accept="image/*" class="hidden" onchange="handleCoverUpload(event)">
+                                <button onclick="document.getElementById('local-cover-upload').click()" class="glass-input shrink-0 px-4 rounded-lg hover:bg-accent hover:text-white transition-all flex items-center gap-2 text-sm uppercase font-mono tracking-widest" style="color: var(--accent-main)">
+                                    Tải Lên
+                                </button>
+                            </div>
+                            <!-- Preview Ảnh Cover Local -->
+                            <div id="cover-preview-container" class="hidden mt-3 w-full h-32 rounded-lg overflow-hidden border" style="border-color: var(--glass-border)">
+                                <img id="cover-preview" src="" class="w-full h-full object-cover">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- BỘ CÔNG CỤ SOẠN THẢO (Glass Block 2) -->
+                <div class="macos-glass p-6 md:p-8">
+                    <label class="block text-xs font-mono mb-3 uppercase tracking-widest flex items-center justify-between" style="color: var(--text-muted)">
+                        <span>Nội Dung Bài Viết (Định Dạng Nâng Cao)</span>
+                        <span class="text-accent text-[10px]">Tự Động Tối Ưu Hình Ảnh</span>
+                    </label>
+                    
+                    <div class="editor-container glass-input">
+                        <!-- Thanh công cụ Toolbar -->
+                        <div class="editor-toolbar">
+                            <button onclick="formatText('bold')" class="toolbar-btn font-bold" title="In đậm (Ctrl+B)">B</button>
+                            <button onclick="formatText('italic')" class="toolbar-btn italic" title="In nghiêng (Ctrl+I)">I</button>
+                            <button onclick="formatText('underline')" class="toolbar-btn underline" title="Gạch chân (Ctrl+U)">U</button>
+                            
+                            <div class="toolbar-divider"></div>
+                            
+                            <button onclick="formatText('formatBlock', 'H2')" class="toolbar-btn font-bold font-display text-accent" title="Tiêu đề chính H2">H2</button>
+                            <button onclick="formatText('formatBlock', 'H3')" class="toolbar-btn font-bold font-display opacity-80" title="Tiêu đề phụ H3">H3</button>
+                            <button onclick="formatText('formatBlock', 'P')" class="toolbar-btn" title="Đoạn văn bản thường">Đoạn Văn</button>
+                            
+                            <div class="toolbar-divider"></div>
+                            
+                            <button onclick="addLink()" class="toolbar-btn flex items-center gap-1.5" title="Chèn Liên kết">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M13.19 8.688a4.5 4.5 0 011.242 7.244l-4.5 4.5a4.5 4.5 0 01-6.364-6.364l1.757-1.757m13.35-.622l1.757-1.757a4.5 4.5 0 00-6.364-6.364l-4.5 4.5a4.5 4.5 0 001.242 7.244" /></svg>
+                                <span>Liên Kết</span>
+                            </button>
+                            
+                            <!-- Chèn Ảnh Local vào giữa bài -->
+                            <input type="file" id="local-inline-upload" accept="image/*" class="hidden" onchange="handleInlineImageUpload(event)">
+                            <button onclick="document.getElementById('local-inline-upload').click()" class="toolbar-btn flex items-center gap-1.5" title="Chèn ảnh từ máy tính (Auto SEO)">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 001.5-1.5V6a1.5 1.5 0 00-1.5-1.5H3.75A1.5 1.5 0 002.25 6v12a1.5 1.5 0 001.5 1.5zm10.5-11.25h.008v.008h-.008V8.25zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" /></svg>
+                                <span>Ảnh Từ Máy</span>
+                            </button>
+
+                            <button onclick="addSeoImageURL()" class="toolbar-btn flex items-center gap-1.5 text-accent" title="Chèn Ảnh từ Đường Dẫn URL">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M12 21v-8.25M15.75 21v-8.25M8.25 21v-8.25M3 9l9-6 9 6m-1.5 12V10.332A48.36 48.36 0 0012 9.75c-2.551 0-5.056.2-7.5.582V21M3 21h18M12 6.75h.008v.008H12V6.75z" /></svg>
+                                <span>Ảnh Từ Web</span>
+                            </button>
+
+                            <div class="toolbar-divider"></div>
+
+                            <button onclick="formatText('removeFormat')" class="toolbar-btn" title="Xóa toàn bộ định dạng">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
+                            </button>
+                        </div>
+                        
+                        <!-- Content Editable -->
+                        <div id="post-content" contenteditable="true" class="editor-content" placeholder="Bắt đầu soạn thảo nội dung... Cấu trúc bài viết bằng Tiêu đề (H2, H3) và chèn ảnh minh họa chuẩn SEO..."></div>
+                    </div>
+
+                    <div class="flex items-center justify-between mt-8">
+                        <p class="text-xs font-mono" style="color: var(--text-muted)">Hệ thống tự động nén dung lượng ảnh và chuẩn hóa mã HTML.</p>
+                        <button onclick="submitDraft()" class="bg-accent text-white font-display uppercase tracking-widest py-3 px-10 rounded-full transition-all shadow-accent hover:scale-105 hover:opacity-90">
+                            Gửi Bản Nháp
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- WORKSPACE CỦA ADMIN / DEV (Glass Block 3) -->
+        <div id="workspace-admin" class="hidden animate-fade-in flex-grow">
+            <div class="macos-glass p-6 md:p-8">
+                <div class="flex items-center justify-between mb-8 border-b pb-4" style="border-color: var(--glass-border)">
+                    <h3 class="font-display text-2xl uppercase tracking-wide">Danh Sách Lưu Trữ</h3>
+                    <span class="glass-input text-xs font-mono px-3 py-1 rounded" id="queue-count">0 Bài Viết</span>
+                </div>
+                
+                <div id="admin-list" class="flex flex-col gap-4">
+                    <!-- Danh sách sinh ra bằng JS -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- UI Xử lý Loading Ngầm -->
+    <div id="loading-overlay" class="fixed inset-0 bg-black/80 backdrop-blur-md z-[999] items-center justify-center flex-col gap-4">
+        <svg class="animate-spin h-12 w-12 text-accent" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+        <p class="text-white font-mono text-sm uppercase tracking-widest animate-pulse mt-4">Đang xử lý và tự động nén kích thước...</p>
+    </div>
+
+    <script>
+        // ==========================================
+        //  LOGIC CHUYỂN ĐỔI THEME (SÁNG / TỐI)
+        // ==========================================
+        function toggleTheme() {
+            const body = document.body;
+            const toggle = document.getElementById('theme-toggle');
+            const label = document.getElementById('theme-label');
+            
+            body.classList.toggle('light-theme');
+            const isLight = body.classList.contains('light-theme');
+            
+            toggle.checked = isLight;
+            label.innerText = isLight ? 'Sáng Ngọc' : 'Tối Neon';
+            
+            // Lưu trạng thái vào localStorage
+            localStorage.setItem('helios_theme_mode', isLight ? 'light' : 'dark');
+        }
+
+        // Kiểm tra theme lúc load trang
+        if(localStorage.getItem('helios_theme_mode') === 'light') {
+            toggleTheme();
+        }
+
+        let blogs = JSON.parse(localStorage.getItem('helios_blogs')) || [];
+
+        function switchTab(role) {
+            document.getElementById('workspace-editor').style.display = role === 'editor' ? 'block' : 'none';
+            document.getElementById('workspace-admin').style.display = role === 'admin' ? 'block' : 'none';
+            document.getElementById('tab-editor').classList.toggle('active', role === 'editor');
+            document.getElementById('tab-admin').classList.toggle('active', role === 'admin');
+            if(role === 'admin') renderAdminList();
+        }
+
+        // ==========================================
+        //  LOGIC XỬ LÝ ẢNH LOCAL (RESIZE & NÉN BASE64)
+        // ==========================================
+        // Hàm dùng chung để Resize ảnh từ File tải lên nhằm giảm dung lượng bộ nhớ
+        function resizeAndConvertImage(file, callback) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const img = new Image();
+                img.onload = function() {
+                    const canvas = document.createElement('canvas');
+                    const MAX_WIDTH = 1200; // Chiều rộng tối đa cho web
+                    let width = img.width;
+                    let height = img.height;
+
+                    if (width > MAX_WIDTH) {
+                        height = height * (MAX_WIDTH / width);
+                        width = MAX_WIDTH;
+                    }
+                    canvas.width = width;
+                    canvas.height = height;
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0, width, height);
+                    
+                    // Nén chất lượng JPEG xuống 75%
+                    const dataUrl = canvas.toDataURL('image/jpeg', 0.75);
+                    callback(dataUrl, width, height);
+                }
+                img.src = e.target.result;
+            }
+            reader.readAsDataURL(file);
+        }
+
+        // 1. Xử lý tải Ảnh Cover (Local)
+        function handleCoverUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            document.getElementById('loading-overlay').classList.add('active');
+
+            resizeAndConvertImage(file, (base64Str) => {
+                document.getElementById('post-image').value = base64Str;
+                document.getElementById('cover-preview-container').classList.remove('hidden');
+                document.getElementById('cover-preview').src = base64Str;
+                document.getElementById('loading-overlay').classList.remove('active');
+            });
+        }
+
+        // 2. Xử lý tải Ảnh chen ngang bài viết (Local Inline)
+        function handleInlineImageUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            const altText = prompt('Nhập mô tả ảnh (Thẻ ALT) cho mục đích SEO:', 'Hình ảnh minh họa');
+            if(altText === null) {
+                event.target.value = ''; // Reset input
+                return;
+            }
+
+            document.getElementById('loading-overlay').classList.add('active');
+
+            resizeAndConvertImage(file, (base64Str, originalWidth, originalHeight) => {
+                // Áp dụng thuật toán SEO CLS Box như URL
+                const aspectRatioPadding = (originalHeight / originalWidth) * 100;
+                const seoOptimizedHTML = `
+                    <figure style="margin: 2rem 0; width: 100%; border-radius: 0.5rem; overflow: hidden; border: 1px solid rgba(128,128,128,0.2); background-color: rgba(0,0,0,0.1);">
+                        <div style="position: relative; width: 100%; padding-bottom: ${aspectRatioPadding}%; overflow: hidden;">
+                            <img src="${base64Str}" alt="${altText}" title="${altText}" loading="lazy" decoding="async" width="${originalWidth}" height="${originalHeight}" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover;">
+                        </div>
+                        ${altText ? `<figcaption style="text-align: center; color: #888; font-size: 0.875rem; padding: 0.75rem; font-style: italic;">${altText}</figcaption>` : ''}
+                    </figure>
+                    <p><br></p>
+                `;
+                
+                document.getElementById('loading-overlay').classList.remove('active');
+                document.getElementById('post-content').focus();
+                formatText('insertHTML', seoOptimizedHTML);
+                event.target.value = ''; // Reset input
+            });
+        }
+
+        // 3. Xử lý Ảnh URL (Giữ nguyên như cũ)
+        function addSeoImageURL() {
+            const url = prompt('Nhập đường dẫn hình ảnh minh họa:', 'https://images.unsplash.com/photo...');
+            if (!url) return;
+            const altText = prompt('Nhập mô tả ảnh (Thẻ ALT) cho mục đích SEO:', 'Hình ảnh minh họa');
+            if (altText === null) return; 
+
+            document.getElementById('loading-overlay').classList.add('active');
+            const imgObj = new Image();
+            imgObj.onload = function() {
+                document.getElementById('loading-overlay').classList.remove('active');
+                const aspectRatioPadding = (this.height / this.width) * 100;
+                const seoOptimizedHTML = `
+                    <figure style="margin: 2rem 0; width: 100%; border-radius: 0.5rem; overflow: hidden; border: 1px solid rgba(128,128,128,0.2); background-color: rgba(0,0,0,0.1);">
+                        <div style="position: relative; width: 100%; padding-bottom: ${aspectRatioPadding}%; overflow: hidden;">
+                            <img src="${url}" alt="${altText}" loading="lazy" width="${this.width}" height="${this.height}" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover;">
+                        </div>
+                        ${altText ? `<figcaption style="text-align: center; color: #888; font-size: 0.875rem; padding: 0.75rem; font-style: italic;">${altText}</figcaption>` : ''}
+                    </figure>
+                    <p><br></p>
+                `;
+                document.getElementById('post-content').focus();
+                formatText('insertHTML', seoOptimizedHTML);
+            };
+            imgObj.onerror = function() {
+                document.getElementById('loading-overlay').classList.remove('active');
+                alert('URL Lỗi. Đã chèn ảnh dạng cơ bản.');
+                formatText('insertImage', url);
+            };
+            imgObj.src = url;
+        }
+
+        // ==========================================
+        //  LOGIC EDITOR CƠ BẢN
+        // ==========================================
+        function formatText(command, value = null) {
+            document.execCommand(command, false, value);
+            document.getElementById('post-content').focus();
+        }
+
+        function addLink() {
+            const url = prompt('Nhập đường dẫn liên kết:', 'https://');
+            if (url) formatText('createLink', url);
+        }
+
+        // ==========================================
+        // QUẢN LÝ DỮ LIỆU
+        // ==========================================
+        function submitDraft() {
+            const title = document.getElementById('post-title').value;
+            const image = document.getElementById('post-image').value;
+            const contentHTML = document.getElementById('post-content').innerHTML;
+
+            if(!title || !contentHTML.trim() || contentHTML === '<br>') return alert("Vui lòng nhập tiêu đề và nội dung bài viết!");
+
+            const newBlog = {
+                id: Date.now(),
+                title: title,
+                image: image || 'https://images.unsplash.com/photo-1616469829581-73993eb86b02?auto=format&fit=crop&q=80&w=800',
+                content: contentHTML, 
+                status: 'pending', 
+                seo_json: null 
+            };
+
+            blogs.unshift(newBlog);
+            try {
+                localStorage.setItem('helios_blogs', JSON.stringify(blogs));
+                document.getElementById('post-title').value = '';
+                document.getElementById('post-image').value = '';
+                document.getElementById('cover-preview-container').classList.add('hidden');
+                document.getElementById('post-content').innerHTML = '';
+                alert("Bản nháp đã gửi thành công!");
+            } catch (e) {
+                alert("Lỗi: Bộ nhớ trình duyệt đã đầy do chứa quá nhiều ảnh. Vui lòng sử dụng Đường dẫn ảnh thay vì tải tệp từ máy tính, hoặc xóa bớt bài viết cũ.");
+                blogs.shift(); // Hoàn tác
+            }
+        }
+
+        function renderAdminList() {
+            const list = document.getElementById('admin-list');
+            document.getElementById('queue-count').innerText = `${blogs.length} Bài Viết`;
+            list.innerHTML = '';
+            
+            blogs.forEach(blog => {
+                const isPending = blog.status === 'pending';
+                const isOptimized = blog.status === 'optimized';
+                
+                let actionBtn = '';
+                let statusText = '';
+
+                if(isPending) {
+                    statusText = 'Chờ Duyệt';
+                    actionBtn = `<button onclick="aiOptimize(${blog.id})" class="bg-[rgba(0,243,255,0.1)] text-[var(--accent-main)] border border-accent hover:bg-accent hover:text-white px-5 py-2.5 rounded-lg text-xs font-mono uppercase tracking-widest transition-all">1. Tối Ưu SEO (Bằng AI)</button>`;
+                } else if (isOptimized) {
+                    statusText = 'Đã Tối Ưu';
+                    actionBtn = `<button onclick="pushLive(${blog.id})" class="bg-green-600/20 text-green-500 border border-green-500/50 hover:bg-green-500 hover:text-white px-5 py-2.5 rounded-lg text-xs font-mono uppercase tracking-widest transition-all">2. Đăng Lên Web</button>`;
+                } else {
+                    statusText = 'Đã Xuất Bản';
+                    actionBtn = `<span class="text-gray-500 text-xs font-mono uppercase border border-gray-600 px-5 py-2.5 rounded-lg glass-input">Đã Xuất Bản</span>`;
+                }
+
+                list.innerHTML += `
+                    <div class="glass-input p-5 rounded-xl flex flex-col md:flex-row justify-between items-start md:items-center transition-colors gap-4">
+                        <div class="max-w-2xl">
+                            <h4 class="font-display text-xl mb-1" style="color: var(--text-main)">${blog.title}</h4>
+                            <div class="flex items-center gap-3">
+                                <span class="text-[10px] px-2 py-0.5 rounded font-mono uppercase ${isPending ? 'bg-yellow-500/20 text-yellow-500 border border-yellow-500/30' : isOptimized ? 'bg-[rgba(0,243,255,0.2)] text-accent border border-accent' : 'bg-green-500/20 text-green-500 border border-green-500/30'}">Trạng thái: ${statusText}</span>
+                                <span class="text-xs font-mono" style="color: var(--text-muted)">Mã: ${blog.id}</span>
+                            </div>
+                        </div>
+                        <div class="flex gap-2 w-full md:w-auto shrink-0">
+                            <button onclick="deletePost(${blog.id})" class="text-gray-500 hover:text-red-500 px-3 transition-colors" title="Xóa"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" /></svg></button>
+                            ${actionBtn}
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        function deletePost(id) {
+            if(confirm("Chắc chắn xóa bài này?")) {
+                blogs = blogs.filter(b => b.id !== id);
+                localStorage.setItem('helios_blogs', JSON.stringify(blogs));
+                renderAdminList();
+            }
+        }
+
+        function aiOptimize(id) {
+            const index = blogs.findIndex(b => b.id === id);
+            const plainTextForSEO = blogs[index].content.replace(/<[^>]*>?/gm, '').trim();
+
+            setTimeout(() => {
+                const mockAIGeneratedJSON = {
+                    "@context": "https://schema.org",
+                    "@type": "BlogPosting",
+                    "headline": blogs[index].title,
+                    "image": blogs[index].image,
+                    "articleBody": plainTextForSEO.substring(0, 150) + "...", 
+                    "author": { "@type": "Organization", "name": "Helios Talent" }
+                };
+                
+                blogs[index].seo_json = mockAIGeneratedJSON;
+                blogs[index].status = 'optimized';
+                localStorage.setItem('helios_blogs', JSON.stringify(blogs));
+                renderAdminList();
+            }, 800);
+        }
+
+        function pushLive(id) {
+            const index = blogs.findIndex(b => b.id === id);
+            blogs[index].status = 'published';
+            localStorage.setItem('helios_blogs', JSON.stringify(blogs));
+            renderAdminList();
+        }
+    </script>
+</body>
+</html>
