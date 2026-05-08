@@ -10,7 +10,7 @@ export default function Workspace() {
   const router = useRouter();
   const userRole = (session?.user as any)?.role;
 
-  const [activeTab, setActiveTab] = useState<"editor" | "admin" | "contacts">("editor");
+  const [activeTab, setActiveTab] = useState<"editor" | "admin" | "contacts" | "recruitment">("editor");
   const [theme, setTheme] = useState("dark");
   const [title, setTitle] = useState("");
   const [category, setCategory] = useState("blog");
@@ -18,6 +18,7 @@ export default function Workspace() {
   const editorRef = useRef<HTMLDivElement>(null);
   const [blogs, setBlogs] = useState<any[]>([]);
   const [contacts, setContacts] = useState<any[]>([]);
+  const [jobs, setJobs] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
@@ -35,7 +36,10 @@ export default function Workspace() {
       document.body.classList.add("light-theme");
     }
     fetchPosts();
-    if (userRole === "admin") fetchContacts();
+    if (userRole === "admin") {
+      fetchContacts();
+      fetchJobs();
+    }
     return () => {
       document.body.classList.remove("workspace-mode", "light-theme");
     };
@@ -54,6 +58,28 @@ export default function Workspace() {
       const res = await fetch("/api/contacts");
       const json = await res.json();
       if (json.success) setContacts(json.data);
+    } catch (e) { console.error(e); }
+  };
+
+  const fetchJobs = async () => {
+    try {
+      const res = await fetch("/api/jobs");
+      const json = await res.json();
+      if (json.success && json.list) setJobs(json.list);
+    } catch (e) { console.error(e); }
+  };
+
+  const toggleJobStatus = async (jobId: string, currentStatus: boolean) => {
+    try {
+      const res = await fetch(`/api/jobs/${jobId}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ isActive: !currentStatus }),
+      });
+      const json = await res.json();
+      if (json.success) {
+        setJobs(prev => prev.map(j => j.jobId === jobId ? { ...j, isActive: !currentStatus } : j));
+      }
     } catch (e) { console.error(e); }
   };
 
@@ -185,6 +211,11 @@ export default function Workspace() {
           {userRole === "admin" && (
             <button onClick={() => { setActiveTab("contacts"); fetchContacts(); }} className={`pb-3 font-mono uppercase tracking-widest text-sm transition-all border-b-2 whitespace-nowrap ${activeTab === "contacts" ? "border-[var(--accent-main)] text-[var(--accent-main)]" : "border-transparent text-[var(--text-muted)] hover:text-[var(--accent-main)]"}`}>
               Quản Lý Liên Hệ
+            </button>
+          )}
+          {userRole === "admin" && (
+            <button onClick={() => { setActiveTab("recruitment"); fetchJobs(); }} className={`pb-3 font-mono uppercase tracking-widest text-sm transition-all border-b-2 whitespace-nowrap ${activeTab === "recruitment" ? "border-[var(--accent-main)] text-[var(--accent-main)]" : "border-transparent text-[var(--text-muted)] hover:text-[var(--accent-main)]"}`}>
+              Quản Lý Tuyển Dụng
             </button>
           )}
         </div>
@@ -321,6 +352,47 @@ export default function Workspace() {
                   </div>
                 ))}
                 {contacts.length === 0 && <p className="text-center text-[var(--text-muted)] font-mono py-12">Chưa có đơn liên hệ nào.</p>}
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* RECRUITMENT TAB (Admin only) */}
+        {activeTab === "recruitment" && userRole === "admin" && (
+          <div className="flex-grow animate-fade-in">
+            <div className="bg-[var(--glass-bg)] backdrop-blur-3xl saturate-150 border border-[var(--glass-border)] rounded-3xl shadow-[var(--glass-shadow)] p-6 md:p-8">
+              <div className="flex items-center justify-between mb-8 border-b border-[var(--glass-border)] pb-4">
+                <h3 className="font-display text-2xl uppercase tracking-wide text-[var(--text-main)]">Trạng Thái Tuyển Dụng</h3>
+                <span className="bg-[var(--input-bg)] border border-[var(--glass-border)] text-[var(--text-main)] text-xs font-mono px-3 py-1 rounded">{jobs.length} Vị Trí</span>
+              </div>
+              <p className="text-sm text-[var(--text-muted)] mb-6 font-light">Bật/tắt trạng thái tuyển dụng cho từng vị trí. Thay đổi sẽ được phản ánh ngay trên trang Tuyển Dụng công khai.</p>
+              <div className="flex flex-col gap-4">
+                {jobs.map((job: any) => (
+                  <div key={job.jobId} className="bg-[var(--input-bg)] border border-[var(--glass-border)] p-5 rounded-xl flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                    <div>
+                      <h4 className="font-display text-lg text-[var(--text-main)] uppercase tracking-wide">{job.title}</h4>
+                      <div className="flex items-center gap-2 mt-2">
+                        <span className={`text-[10px] px-2 py-0.5 rounded font-mono uppercase border ${job.isActive ? 'bg-green-500/20 text-green-400 border-green-500/30' : 'bg-red-500/20 text-red-400 border-red-500/30'}`}>
+                          {job.isActive ? 'Đang Tuyển' : 'Đã Đóng'}
+                        </span>
+                        <span className="text-[10px] font-mono text-[var(--text-muted)]">
+                          ID: {job.jobId}
+                        </span>
+                      </div>
+                    </div>
+                    <button
+                      onClick={() => toggleJobStatus(job.jobId, job.isActive)}
+                      className={`shrink-0 px-6 py-2.5 rounded-lg text-xs font-mono uppercase tracking-widest transition-all border ${
+                        job.isActive
+                          ? 'bg-red-500/10 text-red-400 border-red-500/30 hover:bg-red-500 hover:text-white'
+                          : 'bg-green-500/10 text-green-400 border-green-500/30 hover:bg-green-500 hover:text-white'
+                      }`}
+                    >
+                      {job.isActive ? 'Đóng Tuyển' : 'Mở Tuyển'}
+                    </button>
+                  </div>
+                ))}
+                {jobs.length === 0 && <p className="text-center text-[var(--text-muted)] font-mono py-12">Đang tải dữ liệu tuyển dụng...</p>}
               </div>
             </div>
           </div>

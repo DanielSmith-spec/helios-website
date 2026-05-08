@@ -31,36 +31,36 @@ export default function LienHe() {
             <div className="marquee-content">
               {/* Set 1 */}
               <div className="shrink-0 w-[280px] sm:w-[400px] md:w-[480px] aspect-video rounded-xl overflow-hidden group border border-white/10 relative">
-                <Image src="https://images.unsplash.com/photo-1598550880863-4e8aa3d0edb4?auto=format&fit=crop&q=80&w=800" alt="" fill className="object-cover transition-transform duration-700 group-hover:scale-110" />
+                                <Image src="/images/contact/studio-01.svg" alt="Mega Studio" fill className="object-cover transition-transform duration-700 group-hover:scale-110" />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4"><span className="font-mono text-xs text-white uppercase tracking-wider">Mega Studio</span></div>
               </div>
               <div className="shrink-0 w-[280px] sm:w-[400px] md:w-[480px] aspect-video rounded-xl overflow-hidden group border border-white/10 relative">
-                <Image src="https://images.unsplash.com/photo-1516280440502-12726615b13c?auto=format&fit=crop&q=80&w=800" alt="" fill className="object-cover transition-transform duration-700 group-hover:scale-110" />
+                <Image src="/images/contact/studio-02.svg" alt="Setup Ánh Sáng" fill className="object-cover transition-transform duration-700 group-hover:scale-110" />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4"><span className="font-mono text-xs text-white uppercase tracking-wider">Setup Ánh Sáng</span></div>
               </div>
               <div className="shrink-0 w-[280px] sm:w-[400px] md:w-[480px] aspect-video rounded-xl overflow-hidden group border border-white/10 relative">
-                <Image src="https://images.unsplash.com/photo-1518130835016-8d655f284bb8?auto=format&fit=crop&q=80&w=800" alt="" fill className="object-cover transition-transform duration-700 group-hover:scale-110" />
+                <Image src="/images/contact/studio-03.svg" alt="Hậu trường Livestream" fill className="object-cover transition-transform duration-700 group-hover:scale-110" />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4"><span className="font-mono text-xs text-white uppercase tracking-wider">Hậu trường Livestream</span></div>
               </div>
               <div className="shrink-0 w-[280px] sm:w-[400px] md:w-[480px] aspect-video rounded-xl overflow-hidden group border border-white/10 relative">
-                <Image src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?auto=format&fit=crop&q=80&w=800" alt="" fill className="object-cover transition-transform duration-700 group-hover:scale-110" />
+                <Image src="/images/contact/studio-04.svg" alt="Đội Ngũ Sáng Tạo" fill className="object-cover transition-transform duration-700 group-hover:scale-110" />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4"><span className="font-mono text-xs text-white uppercase tracking-wider">Đội Ngũ Sáng Tạo</span></div>
               </div>
               {/* Set 2 */}
               <div className="shrink-0 w-[280px] sm:w-[400px] md:w-[480px] aspect-video rounded-xl overflow-hidden group border border-white/10 relative">
-                <Image src="https://images.unsplash.com/photo-1598550880863-4e8aa3d0edb4?auto=format&fit=crop&q=80&w=800" alt="" fill className="object-cover transition-transform duration-700 group-hover:scale-110" />
+                                <Image src="/images/contact/studio-01.svg" alt="Mega Studio" fill className="object-cover transition-transform duration-700 group-hover:scale-110" />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4"><span className="font-mono text-xs text-white uppercase tracking-wider">Mega Studio</span></div>
               </div>
               <div className="shrink-0 w-[280px] sm:w-[400px] md:w-[480px] aspect-video rounded-xl overflow-hidden group border border-white/10 relative">
-                <Image src="https://images.unsplash.com/photo-1516280440502-12726615b13c?auto=format&fit=crop&q=80&w=800" alt="" fill className="object-cover transition-transform duration-700 group-hover:scale-110" />
+                <Image src="/images/contact/studio-02.svg" alt="Setup Ánh Sáng" fill className="object-cover transition-transform duration-700 group-hover:scale-110" />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4"><span className="font-mono text-xs text-white uppercase tracking-wider">Setup Ánh Sáng</span></div>
               </div>
               <div className="shrink-0 w-[280px] sm:w-[400px] md:w-[480px] aspect-video rounded-xl overflow-hidden group border border-white/10 relative">
-                <Image src="https://images.unsplash.com/photo-1518130835016-8d655f284bb8?auto=format&fit=crop&q=80&w=800" alt="" fill className="object-cover transition-transform duration-700 group-hover:scale-110" />
+                <Image src="/images/contact/studio-03.svg" alt="Hậu trường Livestream" fill className="object-cover transition-transform duration-700 group-hover:scale-110" />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4"><span className="font-mono text-xs text-white uppercase tracking-wider">Hậu trường Livestream</span></div>
               </div>
               <div className="shrink-0 w-[280px] sm:w-[400px] md:w-[480px] aspect-video rounded-xl overflow-hidden group border border-white/10 relative">
-                <Image src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?auto=format&fit=crop&q=80&w=800" alt="" fill className="object-cover transition-transform duration-700 group-hover:scale-110" />
+                <Image src="/images/contact/studio-04.svg" alt="Đội Ngũ Sáng Tạo" fill className="object-cover transition-transform duration-700 group-hover:scale-110" />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4"><span className="font-mono text-xs text-white uppercase tracking-wider">Đội Ngũ Sáng Tạo</span></div>
               </div>
             </div>

@@ -81,7 +81,9 @@ export default function NavigationMenu() {
           <li><Link href="/tin-tuc-su-kien" onClick={toggleMenu} className="menu-link font-display text-3xl md:text-4xl uppercase tracking-widest inline-block">Tin tức sự kiện</Link></li>
           <li><Link href="/lien-he" onClick={toggleMenu} className="menu-link font-display text-3xl md:text-4xl uppercase tracking-widest inline-block">Liên hệ</Link></li>
           <li><Link href="/tuyen-dung" onClick={toggleMenu} className="menu-link font-display text-3xl md:text-4xl uppercase tracking-widest inline-block">Tuyển dụng</Link></li>
-          <li><Link href="/workspace" onClick={toggleMenu} className="menu-link font-display text-3xl md:text-4xl uppercase tracking-widest inline-block text-accent">Workspace</Link></li>
+          {session?.user && (
+            <li><Link href="/workspace" onClick={toggleMenu} className="menu-link font-display text-3xl md:text-4xl uppercase tracking-widest inline-block text-accent">Workspace</Link></li>
+          )}
         </ul>
 
         {/* Auth Section */}
@@ -104,15 +106,7 @@ export default function NavigationMenu() {
                 Đăng Xuất
               </button>
             </div>
-          ) : (
-            <Link
-              href="/login"
-              onClick={toggleMenu}
-              className="block w-full text-center bg-brand-gradient text-black font-display uppercase tracking-widest py-3 rounded-lg hover:opacity-90 transition-opacity text-sm font-bold"
-            >
-              Đăng Nhập
-            </Link>
-          )}
+          ) : null}
         </div>
 
         <div className="mt-6 text-xs font-mono text-gray-500">

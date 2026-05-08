@@ -116,7 +116,7 @@ export default function TinTucSuKien() {
             </div>
 
             <div className="h-card group">
-              <Image src="https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&q=80&w=1200" alt="" fill className="object-cover" sizes="50vw" />
+              <Image src="/images/events/awards/award-01.svg" alt="Top 10 MCN" fill className="object-cover" sizes="50vw" />
               <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent flex flex-col justify-end p-8 md:p-12">
                 <h3 className="font-display text-3xl text-yellow-400 uppercase tracking-wide">Top 10 MCN Xuất Sắc 2026</h3>
                 <p className="text-gray-300 mt-2 font-mono text-sm">Gala TikTok Việt Nam</p>
@@ -124,7 +124,7 @@ export default function TinTucSuKien() {
             </div>
 
             <div className="h-card group">
-              <Image src="https://images.unsplash.com/photo-1561489396-888724a1543d?auto=format&fit=crop&q=80&w=1200" alt="" fill className="object-cover" sizes="50vw" />
+              <Image src="/images/events/awards/award-02.svg" alt="Mega Live" fill className="object-cover" sizes="50vw" />
               <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent flex flex-col justify-end p-8 md:p-12">
                 <h3 className="font-display text-3xl text-yellow-400 uppercase tracking-wide">Mega Live Đột Phá Doanh Thu</h3>
                 <p className="text-gray-300 mt-2 font-mono text-sm">E-commerce Awards</p>
@@ -132,7 +132,7 @@ export default function TinTucSuKien() {
             </div>
 
             <div className="h-card group">
-              <Image src="https://images.unsplash.com/photo-1505373877841-8d25f7d46678?auto=format&fit=crop&q=80&w=1200" alt="" fill className="object-cover" sizes="50vw" />
+              <Image src="/images/events/awards/award-03.svg" alt="Creator" fill className="object-cover" sizes="50vw" />
               <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent flex flex-col justify-end p-8 md:p-12">
                 <h3 className="font-display text-3xl text-yellow-400 uppercase tracking-wide">Creator Có Sức Ảnh Hưởng</h3>
                 <p className="text-gray-300 mt-2 font-mono text-sm">Mạng lưới Helios Talent</p>
@@ -151,7 +151,7 @@ export default function TinTucSuKien() {
             </div>
 
             <div className="h-card group">
-              <Image src="https://images.unsplash.com/photo-1544531586-fde5298cdd40?auto=format&fit=crop&q=80&w=1200" alt="" fill className="object-cover" sizes="50vw" />
+              <Image src="/images/events/culture/trip-01.svg" alt="Company Trip" fill className="object-cover" sizes="50vw" />
               <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent flex flex-col justify-end p-8 md:p-12">
                 <h3 className="font-display text-3xl text-pink-400 uppercase tracking-wide">Company Trip Phú Quốc</h3>
                 <p className="text-gray-300 mt-2 font-mono text-sm">Cháy hết mình cùng đồng đội</p>
@@ -159,7 +159,7 @@ export default function TinTucSuKien() {
             </div>
 
             <div className="h-card group">
-              <Image src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&q=80&w=1200" alt="" fill className="object-cover" sizes="50vw" />
+              <Image src="/images/events/culture/workshop-01.svg" alt="Workshop" fill className="object-cover" sizes="50vw" />
               <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent flex flex-col justify-end p-8 md:p-12">
                 <h3 className="font-display text-3xl text-pink-400 uppercase tracking-wide">Workshop: Đánh thức tiềm năng</h3>
                 <p className="text-gray-300 mt-2 font-mono text-sm">Đào tạo nâng cấp kỹ năng định kỳ</p>
@@ -167,7 +167,7 @@ export default function TinTucSuKien() {
             </div>
 
             <div className="h-card group">
-              <Image src="https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&q=80&w=1200" alt="" fill className="object-cover" sizes="50vw" />
+              <Image src="/images/events/culture/party-01.svg" alt="Year End Party" fill className="object-cover" sizes="50vw" />
               <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent flex flex-col justify-end p-8 md:p-12">
                 <h3 className="font-display text-3xl text-pink-400 uppercase tracking-wide">Year End Party Đẳng Cấp</h3>
                 <p className="text-gray-300 mt-2 font-mono text-sm">Dạ tiệc tri ân cuối năm</p>
@@ -238,20 +238,20 @@ export default function TinTucSuKien() {
           <div className="marquee-container z-10">
             <div className="marquee-content">
               {/* Dãy 1 */}
-              <Image src="https://images.unsplash.com/photo-1616469829581-73993eb86b02?auto=format&fit=crop&q=80&w=300&h=533" alt="" width={192} height={320} className="w-48 h-80 object-cover rounded-xl opacity-50 hover:opacity-100 transition-opacity grayscale hover:grayscale-0" />
-              <Image src="https://images.unsplash.com/photo-1611162617474-5b21e879e113?auto=format&fit=crop&q=80&w=300&h=533" alt="" width={192} height={320} className="w-48 h-80 object-cover rounded-xl opacity-50 hover:opacity-100 transition-opacity grayscale hover:grayscale-0" />
-              <Image src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=300&h=533" alt="" width={192} height={320} className="w-48 h-80 object-cover rounded-xl opacity-50 hover:opacity-100 transition-opacity grayscale hover:grayscale-0" />
-              <Image src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&q=80&w=300&h=533" alt="" width={192} height={320} className="w-48 h-80 object-cover rounded-xl opacity-50 hover:opacity-100 transition-opacity grayscale hover:grayscale-0" />
-              <Image src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&q=80&w=300&h=533" alt="" width={192} height={320} className="w-48 h-80 object-cover rounded-xl opacity-50 hover:opacity-100 transition-opacity grayscale hover:grayscale-0" />
-              <Image src="https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?auto=format&fit=crop&q=80&w=300&h=533" alt="" width={192} height={320} className="w-48 h-80 object-cover rounded-xl opacity-50 hover:opacity-100 transition-opacity grayscale hover:grayscale-0" />
+              <Image src="/images/events/social/tiktok-01.svg" alt="TikTok" width={192} height={320} className="w-48 h-80 object-cover rounded-xl opacity-50 hover:opacity-100 transition-opacity grayscale hover:grayscale-0" />
+              <Image src="/images/events/social/tiktok-02.svg" alt="TikTok" width={192} height={320} className="w-48 h-80 object-cover rounded-xl opacity-50 hover:opacity-100 transition-opacity grayscale hover:grayscale-0" />
+              <Image src="/images/events/social/tiktok-03.svg" alt="TikTok" width={192} height={320} className="w-48 h-80 object-cover rounded-xl opacity-50 hover:opacity-100 transition-opacity grayscale hover:grayscale-0" />
+              <Image src="/images/events/social/tiktok-04.svg" alt="TikTok" width={192} height={320} className="w-48 h-80 object-cover rounded-xl opacity-50 hover:opacity-100 transition-opacity grayscale hover:grayscale-0" />
+              <Image src="/images/events/social/tiktok-05.svg" alt="TikTok" width={192} height={320} className="w-48 h-80 object-cover rounded-xl opacity-50 hover:opacity-100 transition-opacity grayscale hover:grayscale-0" />
+              <Image src="/images/events/social/tiktok-06.svg" alt="TikTok" width={192} height={320} className="w-48 h-80 object-cover rounded-xl opacity-50 hover:opacity-100 transition-opacity grayscale hover:grayscale-0" />
               
               {/* Dãy 2 */}
-              <Image src="https://images.unsplash.com/photo-1616469829581-73993eb86b02?auto=format&fit=crop&q=80&w=300&h=533" alt="" width={192} height={320} className="w-48 h-80 object-cover rounded-xl opacity-50 hover:opacity-100 transition-opacity grayscale hover:grayscale-0" />
-              <Image src="https://images.unsplash.com/photo-1611162617474-5b21e879e113?auto=format&fit=crop&q=80&w=300&h=533" alt="" width={192} height={320} className="w-48 h-80 object-cover rounded-xl opacity-50 hover:opacity-100 transition-opacity grayscale hover:grayscale-0" />
-              <Image src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=300&h=533" alt="" width={192} height={320} className="w-48 h-80 object-cover rounded-xl opacity-50 hover:opacity-100 transition-opacity grayscale hover:grayscale-0" />
-              <Image src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&q=80&w=300&h=533" alt="" width={192} height={320} className="w-48 h-80 object-cover rounded-xl opacity-50 hover:opacity-100 transition-opacity grayscale hover:grayscale-0" />
-              <Image src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&q=80&w=300&h=533" alt="" width={192} height={320} className="w-48 h-80 object-cover rounded-xl opacity-50 hover:opacity-100 transition-opacity grayscale hover:grayscale-0" />
-              <Image src="https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?auto=format&fit=crop&q=80&w=300&h=533" alt="" width={192} height={320} className="w-48 h-80 object-cover rounded-xl opacity-50 hover:opacity-100 transition-opacity grayscale hover:grayscale-0" />
+              <Image src="/images/events/social/tiktok-01.svg" alt="TikTok" width={192} height={320} className="w-48 h-80 object-cover rounded-xl opacity-50 hover:opacity-100 transition-opacity grayscale hover:grayscale-0" />
+              <Image src="/images/events/social/tiktok-02.svg" alt="TikTok" width={192} height={320} className="w-48 h-80 object-cover rounded-xl opacity-50 hover:opacity-100 transition-opacity grayscale hover:grayscale-0" />
+              <Image src="/images/events/social/tiktok-03.svg" alt="TikTok" width={192} height={320} className="w-48 h-80 object-cover rounded-xl opacity-50 hover:opacity-100 transition-opacity grayscale hover:grayscale-0" />
+              <Image src="/images/events/social/tiktok-04.svg" alt="TikTok" width={192} height={320} className="w-48 h-80 object-cover rounded-xl opacity-50 hover:opacity-100 transition-opacity grayscale hover:grayscale-0" />
+              <Image src="/images/events/social/tiktok-05.svg" alt="TikTok" width={192} height={320} className="w-48 h-80 object-cover rounded-xl opacity-50 hover:opacity-100 transition-opacity grayscale hover:grayscale-0" />
+              <Image src="/images/events/social/tiktok-06.svg" alt="TikTok" width={192} height={320} className="w-48 h-80 object-cover rounded-xl opacity-50 hover:opacity-100 transition-opacity grayscale hover:grayscale-0" />
             </div>
           </div>
           

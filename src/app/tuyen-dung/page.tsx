@@ -9,9 +9,20 @@ type JobId = 'livestream' | 'editor' | 'manager' | 'creator' | null;
 export default function TuyenDung() {
   const [activeJob, setActiveJob] = useState<JobId>(null);
   const [modalOpacity, setModalOpacity] = useState(false);
+  const [jobStatuses, setJobStatuses] = useState<Record<string, boolean>>({ livestream: true, editor: true, manager: true, setup: false, creator: true });
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    // Fetch dynamic job statuses
+    const fetchStatuses = async () => {
+      try {
+        const res = await fetch('/api/jobs');
+        const json = await res.json();
+        if (json.success) setJobStatuses(json.data);
+      } catch (e) { console.error('Failed to load job statuses', e); }
+    };
+    fetchStatuses();
+
     const ctx = gsap.context(() => {
       gsap.fromTo(".job-card", 
         { opacity: 0, y: 30 }, 
@@ -239,7 +250,7 @@ export default function TuyenDung() {
             </div>
             <div className="flex-1 w-full relative">
               <div className="aspect-video lg:aspect-[4/3] rounded-2xl overflow-hidden relative border border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.5)]">
-                <Image src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&q=80&w=1000" alt="Đội ngũ Helios" fill className="object-cover" />
+                <Image src="/images/recruitment/team-hero.svg" alt="Đội ngũ Helios" fill className="object-cover" />
                 <div className="absolute inset-0 bg-gradient-to-tr from-black/80 via-black/20 to-transparent"></div>
                 <div className="absolute bottom-6 left-6 right-6">
                   <p className="font-display text-2xl uppercase tracking-wider text-white">#BeAHeliosian</p>
@@ -270,10 +281,14 @@ export default function TuyenDung() {
               <div className="flex-1">
                 <div className="flex items-center gap-3 mb-4">
                   <span className="relative flex h-3 w-3">
-                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-                    <span className="relative inline-flex rounded-full h-3 w-3 bg-green-500 shadow-[0_0_8px_#22c55e]"></span>
+                    {jobStatuses.livestream ? (
+                      <><span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                      <span className="relative inline-flex rounded-full h-3 w-3 bg-green-500 shadow-[0_0_8px_#22c55e]"></span></>
+                    ) : (
+                      <span className="relative inline-flex rounded-full h-3 w-3 bg-red-500 shadow-[0_0_8px_rgba(239,68,68,0.8)]"></span>
+                    )}
                   </span>
-                  <span className="text-xs font-mono text-green-400 uppercase tracking-widest border border-green-500/30 bg-green-500/10 px-2 py-0.5 rounded">Đang tuyển gấp</span>
+                  <span className={`text-xs font-mono uppercase tracking-widest border px-2 py-0.5 rounded ${jobStatuses.livestream ? 'text-green-400 border-green-500/30 bg-green-500/10' : 'text-red-400 border-red-500/30 bg-red-500/10'}`}>{jobStatuses.livestream ? 'Đang tuyển gấp' : 'Đã đủ chỉ tiêu'}</span>
                   <span className="text-xs font-mono text-gray-500 uppercase tracking-widest ml-2">TikTok Live</span>
                 </div>
                 <h3 className="font-display text-2xl md:text-3xl text-white mb-2 uppercase">Livestream Talent / Idol</h3>
@@ -295,10 +310,14 @@ export default function TuyenDung() {
               <div className="flex-1">
                 <div className="flex items-center gap-3 mb-4">
                   <span className="relative flex h-3 w-3">
-                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-                    <span className="relative inline-flex rounded-full h-3 w-3 bg-green-500 shadow-[0_0_8px_#22c55e]"></span>
+                    {jobStatuses.editor ? (
+                      <><span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                      <span className="relative inline-flex rounded-full h-3 w-3 bg-green-500 shadow-[0_0_8px_#22c55e]"></span></>
+                    ) : (
+                      <span className="relative inline-flex rounded-full h-3 w-3 bg-red-500 shadow-[0_0_8px_rgba(239,68,68,0.8)]"></span>
+                    )}
                   </span>
-                  <span className="text-xs font-mono text-green-400 uppercase tracking-widest border border-green-500/30 bg-green-500/10 px-2 py-0.5 rounded">Đang tuyển</span>
+                  <span className={`text-xs font-mono uppercase tracking-widest border px-2 py-0.5 rounded ${jobStatuses.editor ? 'text-green-400 border-green-500/30 bg-green-500/10' : 'text-red-400 border-red-500/30 bg-red-500/10'}`}>{jobStatuses.editor ? 'Đang tuyển' : 'Đã đủ chỉ tiêu'}</span>
                   <span className="text-xs font-mono text-gray-500 uppercase tracking-widest ml-2">Media Production</span>
                 </div>
                 <h3 className="font-display text-2xl md:text-3xl text-white mb-2 uppercase">Video Editor / Quay Dựng</h3>
@@ -320,10 +339,14 @@ export default function TuyenDung() {
               <div className="flex-1">
                 <div className="flex items-center gap-3 mb-4">
                   <span className="relative flex h-3 w-3">
-                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75" style={{ animationDuration: '2s' }}></span>
-                    <span className="relative inline-flex rounded-full h-3 w-3 bg-green-500 shadow-[0_0_8px_#22c55e]"></span>
+                    {jobStatuses.manager ? (
+                      <><span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75" style={{ animationDuration: '2s' }}></span>
+                      <span className="relative inline-flex rounded-full h-3 w-3 bg-green-500 shadow-[0_0_8px_#22c55e]"></span></>
+                    ) : (
+                      <span className="relative inline-flex rounded-full h-3 w-3 bg-red-500 shadow-[0_0_8px_rgba(239,68,68,0.8)]"></span>
+                    )}
                   </span>
-                  <span className="text-xs font-mono text-green-400 uppercase tracking-widest border border-green-500/30 bg-green-500/10 px-2 py-0.5 rounded">Đang tuyển</span>
+                  <span className={`text-xs font-mono uppercase tracking-widest border px-2 py-0.5 rounded ${jobStatuses.manager ? 'text-green-400 border-green-500/30 bg-green-500/10' : 'text-red-400 border-red-500/30 bg-red-500/10'}`}>{jobStatuses.manager ? 'Đang tuyển' : 'Đã đủ chỉ tiêu'}</span>
                   <span className="text-xs font-mono text-gray-500 uppercase tracking-widest ml-2">Management</span>
                 </div>
                 <h3 className="font-display text-2xl md:text-3xl text-white mb-2 uppercase">Talent Manager</h3>
@@ -346,9 +369,14 @@ export default function TuyenDung() {
               <div className="flex-1">
                 <div className="flex items-center gap-3 mb-4">
                   <span className="relative flex h-3 w-3">
-                    <span className="relative inline-flex rounded-full h-3 w-3 bg-red-500 shadow-[0_0_8px_rgba(239,68,68,0.8)]"></span>
+                    {jobStatuses.setup ? (
+                      <><span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                      <span className="relative inline-flex rounded-full h-3 w-3 bg-green-500 shadow-[0_0_8px_#22c55e]"></span></>
+                    ) : (
+                      <span className="relative inline-flex rounded-full h-3 w-3 bg-red-500 shadow-[0_0_8px_rgba(239,68,68,0.8)]"></span>
+                    )}
                   </span>
-                  <span className="text-xs font-mono text-red-400 uppercase tracking-widest border border-red-500/30 bg-red-500/10 px-2 py-0.5 rounded">Đã đủ chỉ tiêu</span>
+                  <span className={`text-xs font-mono uppercase tracking-widest border px-2 py-0.5 rounded ${jobStatuses.setup ? 'text-green-400 border-green-500/30 bg-green-500/10' : 'text-red-400 border-red-500/30 bg-red-500/10'}`}>{jobStatuses.setup ? 'Đang tuyển' : 'Đã đủ chỉ tiêu'}</span>
                   <span className="text-xs font-mono text-gray-500 uppercase tracking-widest ml-2">System Integrator</span>
                 </div>
                 <h3 className="font-display text-2xl md:text-3xl text-white mb-2 uppercase">Chuyên Viên Setup Studio</h3>
@@ -370,10 +398,14 @@ export default function TuyenDung() {
               <div className="flex-1">
                 <div className="flex items-center gap-3 mb-4">
                   <span className="relative flex h-3 w-3">
-                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-                    <span className="relative inline-flex rounded-full h-3 w-3 bg-green-500 shadow-[0_0_8px_#22c55e]"></span>
+                    {jobStatuses.creator ? (
+                      <><span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                      <span className="relative inline-flex rounded-full h-3 w-3 bg-green-500 shadow-[0_0_8px_#22c55e]"></span></>
+                    ) : (
+                      <span className="relative inline-flex rounded-full h-3 w-3 bg-red-500 shadow-[0_0_8px_rgba(239,68,68,0.8)]"></span>
+                    )}
                   </span>
-                  <span className="text-xs font-mono text-green-400 uppercase tracking-widest border border-green-500/30 bg-green-500/10 px-2 py-0.5 rounded">Đang tuyển</span>
+                  <span className={`text-xs font-mono uppercase tracking-widest border px-2 py-0.5 rounded ${jobStatuses.creator ? 'text-green-400 border-green-500/30 bg-green-500/10' : 'text-red-400 border-red-500/30 bg-red-500/10'}`}>{jobStatuses.creator ? 'Đang tuyển' : 'Đã đủ chỉ tiêu'}</span>
                   <span className="text-xs font-mono text-gray-500 uppercase tracking-widest ml-2">Creative</span>
                 </div>
                 <h3 className="font-display text-2xl md:text-3xl text-white mb-2 uppercase">Content Creator / Kịch bản</h3>

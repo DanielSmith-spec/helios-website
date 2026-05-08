@@ -201,7 +201,7 @@ export default function Home() {
             <div className="vignette-overlay absolute inset-0 z-50 pointer-events-none opacity-0"></div>
             <div className="absolute inset-0 z-0 overflow-hidden opacity-40 mix-blend-screen pointer-events-none">
               <video autoPlay loop muted playsInline className="w-full h-full object-cover">
-                <source src="https://assets.mixkit.co/videos/preview/mixkit-stage-lights-illuminating-a-dark-background-4076-large.mp4" type="video/mp4" />
+                <source src="/videos/home/hero-stage-lights.mp4" type="video/mp4" />
               </video>
               <div className="absolute inset-0 bg-gradient-to-b from-[#050505]/50 via-transparent to-[#050505]"></div>
             </div>
@@ -349,9 +349,9 @@ export default function Home() {
               </div>
               
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                <div className="aspect-square bg-gray-800 rounded-lg overflow-hidden relative group"><img src="https://images.unsplash.com/photo-1598550880863-4e8aa3d0edb4?auto=format&fit=crop&q=80&w=800" alt="" className="w-full h-full object-cover opacity-70 group-hover:opacity-100 transition-opacity duration-500" /></div>
-                <div className="aspect-square bg-gray-800 rounded-lg overflow-hidden relative group"><img src="https://images.unsplash.com/photo-1516280440502-12726615b13c?auto=format&fit=crop&q=80&w=800" alt="" className="w-full h-full object-cover opacity-70 group-hover:opacity-100 transition-opacity duration-500" /></div>
-                <div className="aspect-square bg-gray-800 rounded-lg overflow-hidden relative group"><img src="https://images.unsplash.com/photo-1518130835016-8d655f284bb8?auto=format&fit=crop&q=80&w=800" alt="" className="w-full h-full object-cover opacity-70 group-hover:opacity-100 transition-opacity duration-500" /></div>
+                <div className="aspect-square bg-gray-800 rounded-lg overflow-hidden relative group"><img src="/images/home/gallery-studio.svg" alt="Mega Studio" className="w-full h-full object-cover opacity-70 group-hover:opacity-100 transition-opacity duration-500" /></div>
+                <div className="aspect-square bg-gray-800 rounded-lg overflow-hidden relative group"><img src="/images/home/gallery-lighting.svg" alt="Setup Ánh Sáng" className="w-full h-full object-cover opacity-70 group-hover:opacity-100 transition-opacity duration-500" /></div>
+                <div className="aspect-square bg-gray-800 rounded-lg overflow-hidden relative group"><img src="/images/home/gallery-backstage.svg" alt="Hậu trường" className="w-full h-full object-cover opacity-70 group-hover:opacity-100 transition-opacity duration-500" /></div>
                 <div className="aspect-[4/3] md:aspect-square bg-gray-900 rounded-lg border border-dashed border-gray-700 flex items-center justify-center p-4 text-center">
                   <span className="font-mono text-xs text-gray-500">Khu vực bổ sung<br/>hình ảnh</span>
                 </div>
